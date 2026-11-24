@@ -135,16 +135,14 @@ function render() {
   });
   $("list").replaceChildren(...shown.map(paperNode));
   $("empty").hidden = shown.length > 0;
-  $("count").textContent =
-    shown.length === papers.length ? `${papers.length} papers` : `${shown.length} of ${papers.length} papers`;
   for (const b of $("chips").querySelectorAll("button")) {
     b.setAttribute("aria-pressed", String(b.dataset.topic === active));
   }
 }
 
 function buildChips() {
-  const make = (id, label, n) => {
-    const b = el("button", null, `${label} (${n})`);
+  const make = (id, label) => {
+    const b = el("button", null, label);
     b.type = "button";
     b.dataset.topic = id;
     b.addEventListener("click", () => {
@@ -153,10 +151,9 @@ function buildChips() {
     });
     return b;
   };
-  const nodes = [make("all", "All", papers.length)];
+  const nodes = [make("all", "All")];
   for (const t of TOPICS) {
-    const n = papers.filter((p) => (p.topics || []).includes(t.id)).length;
-    if (n) nodes.push(make(t.id, t.label, n));
+    if (papers.some((p) => (p.topics || []).includes(t.id))) nodes.push(make(t.id, t.label));
   }
   $("chips").replaceChildren(...nodes);
 }
@@ -182,7 +179,6 @@ async function init() {
   } else loadError($("background-list"), "background.json");
 
   if (p.status !== "fulfilled") {
-    $("count").textContent = "";
     loadError($("list"), "papers.json");
     return;
   }

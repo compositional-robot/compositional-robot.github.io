@@ -41,7 +41,6 @@ p { margin: 0 0 12px; }
 .workshops { list-style: none; padding: 0; margin: 0; }
 .workshops li { margin-bottom: 14px; }
 
-.count { font-size: 14px; color: var(--muted); }
 .controls { margin-bottom: 8px; }
 .filters { margin-bottom: 10px; line-height: 2; }
 .filters button {
